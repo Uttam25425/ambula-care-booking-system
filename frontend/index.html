@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Ambula Care | Doctor Booking Platform</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="brand">
+            <div class="brand-icon">A+</div>
+            <div>
+                <h2>Ambula Care</h2>
+                <span>Doctor Booking Platform</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#patient">Patient</a>
+            <a href="#doctorLogin">Doctor Login</a>
+            <a href="#dashboard">Dashboard</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">
+                <div class="badge">Smart appointment booking with real-time slot protection</div>
+            </div>
+
+            <h1>Find the right doctor and book appointments in minutes.</h1>
+
+            <p>
+                A mobile-friendly healthcare booking platform for patients and doctors.
+                Patients can search doctors, book slots, and share health summaries.
+                Doctors can manage appointments, notes, prescriptions, and blocked slots.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#patient" class="btn primary">Book Appointment</a>
+                <a href="#doctorLogin" class="btn secondary">Doctor Login</a>
+            </div>
+
+            <div class="hero-stats">
+                <div>
+                    <strong>7 Days</strong>
+                    <span>Slot visibility</span>
+                </div>
+                <div>
+                    <strong>Safe Slots</strong>
+                    <span>No double booking</span>
+                </div>
+                <div>
+                    <strong>Mobile Ready</strong>
+                    <span>Book in under 2 minutes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="doctor-visual">
+                <div class="pulse"></div>
+                <h3>Live Slot Protection</h3>
+                <p>
+                    If two patients try to book the same slot, the backend database
+                    accepts only one booking and returns the next available slot to the other user.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PATIENT SIDE -->
+    <section id="patient" class="section">
+        <div class="section-title">
+            <span>Patient Side</span>
+            <h2>Search Doctors & Book Slots</h2>
+            <p>Search by doctor name, specialization, or location.</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search: Cardiologist, Bhubaneswar, Dr. Priya..." />
+            <button onclick="loadDoctors()">Search</button>
+        </div>
+
+        <div id="doctorList" class="doctor-grid"></div>
+    </section>
+
+    <!-- DOCTOR PROFILE + SLOTS -->
+    <section id="profileSection" class="section hidden">
+        <div class="section-title">
+            <span>Doctor Profile</span>
+            <h2 id="profileDoctorName">Doctor Name</h2>
+            <p id="profileDoctorInfo">Specialization and location</p>
+        </div>
+
+        <div class="profile-layout">
+            <div class="profile-card">
+                <h3>Doctor Details</h3>
+                <p><b>Specialization:</b> <span id="profileSpecialization"></span></p>
+                <p><b>Location:</b> <span id="profileLocation"></span></p>
+                <p><b>Fee:</b> ₹<span id="profileFee"></span></p>
+                <p><b>Experience:</b> <span id="profileExperience"></span></p>
+                <p id="profileBio"></p>
+            </div>
+
+            <div class="slots-card">
+                <h3>Available Slots - Next 7 Days</h3>
+                <div id="slotsContainer" class="slots-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKING FORM -->
+    <section id="bookingSection" class="section hidden">
+        <div class="section-title">
+            <span>Appointment Booking</span>
+            <h2>Complete Patient Details</h2>
+            <p>Health summary will be visible to doctor before consultation.</p>
+        </div>
+
+        <form id="bookingForm" class="form-card">
+            <input type="hidden" id="selectedDoctorId">
+            <input type="hidden" id="selectedSlotDate">
+            <input type="hidden" id="selectedSlotTime">
+
+            <div class="selected-slot-box">
+                <strong>Selected Slot:</strong>
+                <span id="selectedSlotText">No slot selected</span>
+            </div>
+
+            <div class="form-grid">
+                <div>
+                    <label>Patient Name</label>
+                    <input type="text" id="patientName" required placeholder="Enter patient name">
+                </div>
+
+                <div>
+                    <label>Age</label>
+                    <input type="number" id="age" required placeholder="Enter age">
+                </div>
+
+                <div>
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" required placeholder="Enter phone number">
+                </div>
+
+                <div>
+                    <label>Blood Group</label>
+                    <input type="text" id="bloodGroup" placeholder="Example: B+">
+                </div>
+
+                <div>
+                    <label>Known Medical Conditions</label>
+                    <input type="text" id="medicalConditions" placeholder="Diabetes, asthma, etc.">
+                </div>
+
+                <div>
+                    <label>Current Medications</label>
+                    <input type="text" id="currentMedications" placeholder="Medicine names">
+                </div>
+            </div>
+
+            <button type="submit" class="btn primary full-btn">Confirm Booking</button>
+        </form>
+    </section>
+
+    <!-- BOOKING SUCCESS -->
+    <section id="successSection" class="section hidden">
+        <div class="success-card">
+            <div class="success-icon">✓</div>
+            <h2>Appointment Confirmed</h2>
+            <p>Your appointment has been booked successfully.</p>
+
+            <div class="booking-id-box">
+                Booking ID:
+                <strong id="bookingIdText"></strong>
+            </div>
+
+            <button class="btn primary" onclick="goHome()">Book Another Appointment</button>
+        </div>
+    </section>
+
+    <!-- DOCTOR LOGIN -->
+    <section id="doctorLogin" class="section">
+        <div class="section-title">
+            <span>Doctor Side</span>
+            <h2>Secure Doctor Login</h2>
+            <p>Test credentials: priya@ambula.com / 123456</p>
+        </div>
+
+        <form id="loginForm" class="form-card login-card">
+            <label>Email</label>
+            <input type="email" id="doctorEmail" value="priya@ambula.com" required>
+
+            <label>Password</label>
+            <input type="password" id="doctorPassword" value="123456" required>
+
+            <button type="submit" class="btn primary full-btn">Login</button>
+        </form>
+    </section>
+
+    <!-- DOCTOR DASHBOARD -->
+    <section id="dashboard" class="section hidden">
+        <div class="section-title">
+            <span>Doctor Dashboard</span>
+            <h2 id="dashboardTitle">Today's Appointments</h2>
+            <p>View patient health summary and add consultation notes.</p>
+        </div>
+
+        <div class="dashboard-actions">
+            <button class="btn secondary" onclick="loadTodayAppointments()">Refresh Appointments</button>
+            <button class="btn danger" onclick="logoutDoctor()">Logout</button>
+        </div>
+
+        <div class="block-slot-panel">
+            <h3>Block Leave / Time Slot</h3>
+
+            <div class="form-grid">
+                <div>
+                    <label>Date</label>
+                    <input type="date" id="blockDate">
+                </div>
+
+                <div>
+                    <label>Time Slot</label>
+                    <select id="blockTime">
+                        <option value="">Full Day</option>
+                        <option>09:00 AM</option>
+                        <option>09:30 AM</option>
+                        <option>10:00 AM</option>
+                        <option>10:30 AM</option>
+                        <option>11:00 AM</option>
+                        <option>11:30 AM</option>
+                        <option>12:00 PM</option>
+                        <option>12:30 PM</option>
+                        <option>03:00 PM</option>
+                        <option>03:30 PM</option>
+                        <option>04:00 PM</option>
+                        <option>04:30 PM</option>
+                        <option>05:00 PM</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Reason</label>
+                    <input type="text" id="blockReason" placeholder="Leave / holiday">
+                </div>
+            </div>
+
+            <button class="btn primary" onclick="blockSlot()">Block Slot</button>
+        </div>
+
+        <div id="appointmentList" class="appointment-list"></div>
+    </section>
+
+
+
+    <footer>
+        <p>
+        <footer>
+            <p>Ambula Care — A smart healthcare booking platform for patients and doctors.</p>
+        </footer>
+        </p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
